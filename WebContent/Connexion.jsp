@@ -6,7 +6,7 @@
 
 	<h1>Me connecter</h1>
 
-	<form action="Connexion.jsp" method="POST">
+	<form action="Connexion" method="POST">
 		<label>Identifiant</label>
 		<input type="text" name="id"/>
 		<label>Mot de passe</label>
