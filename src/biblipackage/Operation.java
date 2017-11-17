@@ -12,7 +12,7 @@ public class Operation {
 	
 	private static int nextId = 0;
 
-	private static HashMap<Integer,Utilisateur> listeUtilisateurs = new HashMap<Integer,Utilisateur>();
+	private static HashMap<String,Utilisateur> listeUtilisateurs = new HashMap<String,Utilisateur>();
 	private static HashMap<Integer,Livre> listeLivres = new HashMap<Integer,Livre>();
 
 	private static HashMap<Integer,Operation> reservations = new HashMap<Integer,Operation>();
@@ -20,7 +20,7 @@ public class Operation {
 	
 	public Operation(Livre livre, Utilisateur emprunteurOuReserveur) {
 		//TODO gerer user id
-		this.id = this.calculateNextId();
+		this.id = Operation.calculateNextId();
 		this.livre = livre;
 		this.emprunteurOuReserveur = emprunteurOuReserveur;
 	}
@@ -41,12 +41,16 @@ public class Operation {
 		return nextId++;
 	}
 	
+	public static Utilisateur getUtilisateurParIdentifiant(String identifiant) {
+		return listeUtilisateurs.get(identifiant);
+	}
+	
 	public static void addLivreToListeLivres(Livre newLivre) {
 		listeLivres.put(newLivre.getId(), newLivre);
 	}
 	
 	public static void addUtilisateurToListeUtilisateurs(Utilisateur newUtilisateur) {
-		//listeLivres.put(newUtilisateur.getId(), newUtilisateur);
+		listeUtilisateurs.put(newUtilisateur.getIdentifiant(), newUtilisateur);
 	}
 	
 	public static boolean nouvelleReservation(Utilisateur reservant, Livre livre) {
