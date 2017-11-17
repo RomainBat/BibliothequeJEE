@@ -1,5 +1,4 @@
 package biblipackage;
-
 import java.util.HashMap;
 
 public class Livre {
@@ -10,18 +9,21 @@ public class Livre {
 	private int nb_restant;
 	
 	private static int nextId = 0;
-	//private static HashMap<String,Integer> emprunts = new HashMap<String,Integer>();
 	
 	public Livre(String titre, String auteur, int nb) {
-		this.id = this.getNextId();
+		this.id = this.calculateNextId();
 		this.titre = titre;
 		this.auteur = auteur;
 		this.nb_total = nb;
 		this.nb_restant = nb;
 	}
-	
-	private static int getNextId() {
+
+	private static int calculateNextId() {
 		return nextId++;
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 	
 	public String getTitre() {
@@ -50,7 +52,7 @@ public class Livre {
 		}
 	}
 	
-	public boolean emprunter(Utilisateur utilisateur) {
+	public boolean emprunterOuReserver() {
 		if(this.nb_restant > 0) {
 			this.nb_restant -= 1;
 			return true;
@@ -59,7 +61,7 @@ public class Livre {
 			return false;
 	}
 	
-	public boolean restituer(Utilisateur utilisateur) {
+	public boolean restituerOuAnnulerReservation() {
 		if(this.nb_restant < this.nb_total) {
 			this.nb_restant += 1;
 			return true;

@@ -3,15 +3,15 @@
     <jsp:param name="title" value="Mon compte" />
   </jsp:include>
 
-  <h1>Livres que vous avez réservés :</h1>
+  <h1>Livres que vous avez rÃ©servÃ©s :</h1>
   <ul class="liste-reservation">
-    <li class="livre"><span class="auteur">Georges Washington</span><span class="titre">Déclaration d'indépendance</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="10"/><button type="submit">Annuler la réservation</button></form></li>
-    <li class="livre"><span class="auteur">Stephen King</span><span class="titre">Misery</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="12"/><button type="submit">Annuler la réservation</button></form></li>
-    <li class="livre"><span class="auteur">Georges R. R. Martins</span><span class="titre">A Game of Thrones</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="20"/><button type="submit">Annuler la réservation</button></form></li>
-    <li class="livre"><span class="auteur">Georges R. R. Martins</span><span class="titre">A Dance with Dragons</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="21"/><button type="submit">Annuler la réservation</button></form></li>
-    <li class="livre"><span class="auteur">Georges R. R. Martins</span><span class="titre">A Storm of Swords</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="22"/><button type="submit">Annuler la réservation</button></form></li>
+    <li class="livre"><span class="auteur">Georges Washington</span><span class="titre">DÃ©claration d'indÃ©pendance</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="10"/><button type="submit">Annuler la rÃ©servation</button></form></li>
+    <li class="livre"><span class="auteur">Stephen King</span><span class="titre">Misery</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="12"/><button type="submit">Annuler la rÃ©servation</button></form></li>
+    <li class="livre"><span class="auteur">Georges R. R. Martins</span><span class="titre">A Game of Thrones</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="20"/><button type="submit">Annuler la rÃ©servation</button></form></li>
+    <li class="livre"><span class="auteur">Georges R. R. Martins</span><span class="titre">A Dance with Dragons</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="21"/><button type="submit">Annuler la rÃ©servation</button></form></li>
+    <li class="livre"><span class="auteur">Georges R. R. Martins</span><span class="titre">A Storm of Swords</span><form action="Dereserver" method="POST"><input type="hidden" name="idLivre" value="22"/><button type="submit">Annuler la rÃ©servation</button></form></li>
   </ul>
-  <h1>Livres que vous avez empruntés :</h1>
+  <h1>Livres que vous avez empruntÃ©s :</h1>
   <ul class="liste-emprunts">
     <li class="livre"><span class="auteur">J. K. Rowling</span><span class="titre">L'apprenti sorcier</span></li>
     <li class="livre"><span class="auteur">J. K. Rowling</span><span class="titre">La chambre des secrets</span></li>
