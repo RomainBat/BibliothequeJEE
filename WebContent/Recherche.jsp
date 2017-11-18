@@ -2,6 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ page import="biblipackage.Livre" %>
 <%
+String userId = null;
+if(session.getAttribute("id") == null){
+	response.sendRedirect("Connexion");
+} else {
+	userId = (String) session.getAttribute("id");
+}
+
 Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 %>
     
@@ -10,20 +17,21 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 	</jsp:include>
 
 	<h1>Rechercher un livre</h1>
-	<form action="Recherche.jsp">
+	<form action="Recherche" method="GET">
 	  <label for="auteur">Auteur :</label> <input type="text" name="auteur">
 	  <label for="titre">Titre :</label> <input type="text" name="titre">
 	  <button type="submit">Rechercher</button>
 	</form>
 	<h1>Livres correspondants à votre recherche</h1>
 	<ul class="liste-match">
-		<% for(int i = 0; i<livresRecherches.length; i++){
+		<% if(livresRecherches != null) {
+		for(int i = 0; i<	livresRecherches.length; i++){
 		Livre livre = livresRecherches[i];%>
 		<li class="match">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
 			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
-			<% if (livre.getNb_restant()>0) { %>
+			<% if (livre.getNb_restant()>0 && userId != null) { %>
 			<form action="Recherche" method="POST">
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>
@@ -35,6 +43,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 			</form>
 			<% } %>
 		</li>
+		<% } %>
 		<% } %>
 	</ul>
 

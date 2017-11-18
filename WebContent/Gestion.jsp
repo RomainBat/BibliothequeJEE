@@ -43,8 +43,8 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 		<button type="submit">Rechercher</button>
 	</form>
 	<ul class="liste-match">
-	<% if(livresRecherches != null) {%>
-	<%for(int k = 0; k<livresRecherches.length; k++){
+	<% if(livresRecherches != null) {
+		for(int k = 0; k<livresRecherches.length; k++){
 		Livre livre = livresRecherches[k];%>
 		<li class="match">
 			<span class="auteur"><%=livre.getAuteur()%></span>

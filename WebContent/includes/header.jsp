@@ -10,7 +10,7 @@
 				</head>
 				<body>
 					<header>
-						<div>Auxane Thouary</div>
+						<div><%=session.getAttribute("nom")%></div>
 						<nav>
 							<ul>
 								<li><a href="Recherche">Recherche</a></li>

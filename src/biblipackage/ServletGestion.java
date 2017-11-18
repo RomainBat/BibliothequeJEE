@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Gestion")
 public class ServletGestion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static Utilisateur user;
 	
     /**
      * @see HttpServlet#HttpServlet()
