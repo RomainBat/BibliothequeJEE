@@ -72,38 +72,36 @@ public class Operation {
 		else return false;
 	}
 	
-	public static boolean annulerReservation(Operation reservation) {
-		listeLivres.get(reservation.getLivre().getId()).restituerOuAnnulerReservation();
-		return reservations.remove(reservation.getId(), reservation);
+	public static boolean annulerOperation(int operationId) {
+		Operation ope = reservations.get(operationId);
+		listeLivres.get(ope.getLivre().getId()).restituerOuAnnulerReservation();
+		return reservations.remove(ope.getId(), ope);
 	}
 	
-	public static boolean annulerEmprunt(Operation emprunt) {
-		listeLivres.get(emprunt.getLivre().getId()).restituerOuAnnulerReservation();
-		return emprunts.remove(emprunt.getId(), emprunt);
+	public static Livre getLivreParId(int id) {
+		return listeLivres.get(id);
 	}
 	
-	public static HashMap<Integer,Operation> getLivresFromReservationsByUtilisateur(String utilisateurIdentifiant) {
-		HashMap<Integer,Operation> reservationsFiltres = new HashMap<Integer,Operation>();
+	public static Operation[] getLivresFromReservationsByUtilisateur(String utilisateurIdentifiant) {
+		List<Operation> reservationsFiltres = new ArrayList<Operation>();
 		for(Map.Entry<Integer, Operation> entry : reservations.entrySet()) {
-			int key = entry.getKey();
 		    Operation value = entry.getValue();
 		    if(value.getEmprunteurOuReserveur().getIdentifiant().equals(utilisateurIdentifiant)) {
-		    	reservationsFiltres.put(key, value);
+		    		reservationsFiltres.add(value);
 		    }
 		}
-		return reservationsFiltres;
+		return reservationsFiltres.toArray(new Operation[reservationsFiltres.size()]);
 	}
 	
-	public static HashMap<Integer,Operation> getLivresFromEmpruntsByUtilisateur(String utilisateurIdentifiant) {
-		HashMap<Integer,Operation> empruntsFiltres = new HashMap<Integer,Operation>();
+	public static Operation[] getLivresFromEmpruntsByUtilisateur(String utilisateurIdentifiant) {
+		List<Operation>  empruntsFiltres = new ArrayList<Operation>();
 		for(Map.Entry<Integer, Operation> entry : emprunts.entrySet()) {
-			int key = entry.getKey();
 		    Operation value = entry.getValue();
 		    if(value.getEmprunteurOuReserveur().getIdentifiant().equals(utilisateurIdentifiant)) {
-		    		empruntsFiltres.put(key, value);
+		    		empruntsFiltres.add(value);
 		    }
 		}
-		return empruntsFiltres;
+		return empruntsFiltres.toArray(new Operation[empruntsFiltres.size()]);
 	}
 	
 	private static List<Livre> getListLivresParAuteur(String auteur) {

@@ -13,11 +13,11 @@
 						<div>Auxane Thouary</div>
 						<nav>
 							<ul>
-								<li><a href="Recherche.jsp">Recherche</a></li>
-								<li><a href="Connexion.jsp">Connexion</a></li>
-								<li><a href="Profil.jsp">Mon compte</a></li>
-								<li><a href="Gestion.jsp">Gestion des adhérents</a></li>
-								<li><a href="Emprunts.jsp">Gestion des emprunts</a></li>
+								<li><a href="Recherche">Recherche</a></li>
+								<li><a href="Connexion">Connexion</a></li>
+								<li><a href="Profil">Mon compte</a></li>
+								<li><a href="Gestion">Gestion des adhérents</a></li>
+								<li><a href="Emprunts">Gestion des emprunts</a></li>
 							</ul>
 						</nav>
 					</header>

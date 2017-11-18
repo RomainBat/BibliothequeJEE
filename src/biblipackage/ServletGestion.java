@@ -26,7 +26,7 @@ public class ServletGestion extends HttpServlet {
 		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
 		Operation.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
 		Operation.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
-}
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
