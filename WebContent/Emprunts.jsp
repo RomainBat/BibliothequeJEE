@@ -2,6 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="biblipackage.Utilisateur, biblipackage.Livre" %>
 <%
+String userId = null;
+if(session.getAttribute("id") == null){
+	response.sendRedirect("Connexion");
+}else if (!(boolean)session.getAttribute("isBibliothecaire")) {
+	response.sendRedirect("Profil");
+} else {
+	userId = (String) session.getAttribute("id");
+}
+
 Utilisateur adherents[] = (Utilisateur[]) request.getAttribute("adherents");
 Livre livresEmpruntes[] = (Livre[]) request.getAttribute("livresEmpruntes");
 Livre livresReserves[] = (Livre[]) request.getAttribute("livresReserves");

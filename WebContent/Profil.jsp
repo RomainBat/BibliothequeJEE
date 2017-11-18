@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="biblipackage.Livre" %>
 <%
+String userId = null;
+if(session.getAttribute("id") == null){
+	response.sendRedirect("Connexion");
+}else {
+	userId = (String) session.getAttribute("id");
+}
+
 Livre livresEmpruntes[] = (Livre[]) request.getAttribute("livresEmpruntes");
 Livre livresReserves[] = (Livre[]) request.getAttribute("livresReserves");
 %>
 
   <jsp:include page="includes/header.jsp">
     <jsp:param name="title" value="Mon compte" />
+    <jsp:param name="nom" value="<%= session.getAttribute("nom") %>" />
   </jsp:include>
 
   <h1>Livres que vous avez réservés :</h1>

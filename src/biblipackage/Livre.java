@@ -1,5 +1,4 @@
 package biblipackage;
-import java.util.HashMap;
 
 public class Livre {
 	private int id;
@@ -11,7 +10,7 @@ public class Livre {
 	private static int nextId = 0;
 	
 	public Livre(String titre, String auteur, int nb) {
-		this.id = this.calculateNextId();
+		this.id = Livre.calculateNextId();
 		this.titre = titre;
 		this.auteur = auteur;
 		this.nb_total = nb;

@@ -21,7 +21,9 @@ public class ServletConnexion extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public ServletConnexion() {
-        super();
+        super();        
+        //TODO : Remove this
+		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
     }
 
 	/**
@@ -36,8 +38,6 @@ public class ServletConnexion extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
 
         String id = request.getParameter("id");
 		String mdp = request.getParameter("mdp");
