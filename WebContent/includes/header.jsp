@@ -8,6 +8,7 @@
 				<title>Bibliothèque - <%=request.getParameter("title")%></title>
 				<link rel="stylesheet" href="style.css">
 				</head>
+				
 				<body>
 					<header>
 						<div><%=session.getAttribute("nom")%></div>
