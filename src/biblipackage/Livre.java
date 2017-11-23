@@ -1,5 +1,11 @@
 package biblipackage;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 public class Livre {
 	private int id;
 	private String titre;
@@ -8,6 +14,8 @@ public class Livre {
 	private int nb_restant;
 	
 	private static int nextId = 0;
+
+	private static HashMap<Integer,Livre> listeLivres = new HashMap<Integer,Livre>();
 	
 	public Livre(String titre, String auteur, int nb) {
 		this.id = Livre.calculateNextId();
@@ -67,6 +75,64 @@ public class Livre {
 		}
 		else
 			return false;
+	}
+	
+	//LIST OF LIVRE MANAGEMENT
+	
+	public static HashMap<Integer,Livre> getListeLivres() {
+		return listeLivres;
+	}
+	
+	public static void addLivreToListeLivres(Livre newLivre) {
+		listeLivres.put(newLivre.getId(), newLivre);
+	}
+	
+	public static Livre getLivreParId(int id) {
+		return listeLivres.get(id);
+	}
+	
+	private static List<Livre> getListLivresParAuteur(String auteur) {
+		List<Livre> livresFiltres = new ArrayList<Livre>();
+		for(Map.Entry<Integer, Livre> entry : listeLivres.entrySet()) {
+		    Livre value = entry.getValue();
+		    if(value.getAuteur().equals(auteur)) {
+		    		livresFiltres.add(value);
+		    }
+		}
+		return livresFiltres;
+	}
+	
+	public static Livre[] getLivresParAuteur(String auteur) {
+		List<Livre> livresFiltres = getListLivresParAuteur(auteur);
+		return livresFiltres.toArray(new Livre[livresFiltres.size()]);
+	}
+	
+	private static List<Livre> getListLivresParTitre(String titre) {
+		List<Livre> livresFiltres = new ArrayList<Livre>();
+		for(Map.Entry<Integer, Livre> entry : listeLivres.entrySet()) {
+		    Livre value = entry.getValue();
+		    if(value.getTitre().equals(titre)) {
+		    		livresFiltres.add(value);
+		    }
+		}
+		return livresFiltres;
+	}
+	
+	public static Livre[] getLivresParTitre(String titre) {
+		List<Livre> livresFiltres = getListLivresParTitre(titre);
+		return livresFiltres.toArray(new Livre[livresFiltres.size()]);
+	}
+	
+	public static Livre[] getLivresParTitreAuteur(String titre, String auteur) {
+		List<Livre> livresFiltres = getListLivresParTitre(titre);		 
+		Iterator<Livre> it = livresFiltres.iterator();
+		while (it.hasNext()) {
+			Livre livre = it.next();
+			if (livre.getAuteur().equals(auteur)) {
+				it.remove();
+			}
+		}
+		return livresFiltres.toArray(new Livre[livresFiltres.size()]);
 	}
 	
 }

@@ -23,11 +23,11 @@ public class ServletProfil extends HttpServlet {
      */
     public ServletProfil() {
         super();
-		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
-		Operation.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
-		Operation.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
-		Operation.nouvelleReservation(Operation.getUtilisateurParIdentifiant("Admin"), Operation.getLivreParId(0));
-		Operation.nouvelEmprunt(Operation.getUtilisateurParIdentifiant("Admin"), Operation.getLivreParId(1));
+		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
+		Livre.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
+		Livre.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
+		Operation.nouvelleReservation(Utilisateur.getUtilisateurParIdentifiant("Admin"), Livre.getLivreParId(0));
+		Operation.nouvelEmprunt(Utilisateur.getUtilisateurParIdentifiant("Admin"), Livre.getLivreParId(1));
     }
 
 	/**

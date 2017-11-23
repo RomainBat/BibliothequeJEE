@@ -23,10 +23,10 @@ public class ServletAdherents extends HttpServlet {
      */
     public ServletAdherents() {
         super();
-		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
-		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("John","user","Utilisateur Random", false));
-		Operation.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
-		Operation.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
+		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
+		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("John","user","Utilisateur Random", false));
+		Livre.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
+		Livre.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
     }
 
 	/**
@@ -41,7 +41,7 @@ public class ServletAdherents extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession(false);
-		request.setAttribute("adherents", Operation.getUtilisateurs());
+		request.setAttribute("adherents", Utilisateur.getUtilisateurs());
 		if ( request.getParameter("adherent") != null) {
 			request.setAttribute("livresReserves", Operation.getLivresFromReservationsByUtilisateur(request.getParameter("adherent")));
 			request.setAttribute("livresEmpruntes", Operation.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
@@ -54,7 +54,7 @@ public class ServletAdherents extends HttpServlet {
 					if (request.getParameter("operation") != null) {
 						Operation.annulerReservation(Integer.parseInt(request.getParameter("operation")));
 					}
-					Operation.nouvelEmprunt(Operation.getUtilisateurParIdentifiant(request.getParameter("adherent")), Operation.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
+					Operation.nouvelEmprunt(Utilisateur.getUtilisateurParIdentifiant(request.getParameter("adherent")), Livre.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
 				}
 				// En cas de restitution
 				else if (request.getParameter("typeOperation").equals("restitution")) {
@@ -65,13 +65,13 @@ public class ServletAdherents extends HttpServlet {
 			if ( request.getParameter("titre") != null || request.getParameter("auteur") != null) {
 				if(!request.getParameter("titre").equals("")) {
 					if (!request.getParameter("auteur").equals("")) {
-						request.setAttribute("livresRecherches", Operation.getLivresParTitreAuteur(request.getParameter("titre"),request.getParameter("auteur")));
+						request.setAttribute("livresRecherches", Livre.getLivresParTitreAuteur(request.getParameter("titre"),request.getParameter("auteur")));
 					}
 					else
-						request.setAttribute("livresRecherches", Operation.getLivresParTitre(request.getParameter("titre")));
+						request.setAttribute("livresRecherches", Livre.getLivresParTitre(request.getParameter("titre")));
 				}
 				else {
-					request.setAttribute("livresRecherches", Operation.getLivresParAuteur(request.getParameter("auteur")));
+					request.setAttribute("livresRecherches", Livre.getLivresParAuteur(request.getParameter("auteur")));
 				}
 			}
 		}

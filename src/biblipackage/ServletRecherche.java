@@ -23,9 +23,9 @@ public class ServletRecherche extends HttpServlet {
      */
     public ServletRecherche() {
         super();		
-        Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
-		Operation.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
-		Operation.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
+        Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
+		Livre.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
+		Livre.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
     }
 
 	/**
@@ -35,13 +35,13 @@ public class ServletRecherche extends HttpServlet {
 		if ( request.getParameter("titre") != null || request.getParameter("auteur") != null) {
 			if(!request.getParameter("titre").equals("")) {
 				if (!request.getParameter("auteur").equals("")) {
-					request.setAttribute("livresRecherches", Operation.getLivresParTitreAuteur(request.getParameter("titre"),request.getParameter("auteur")));
+					request.setAttribute("livresRecherches", Livre.getLivresParTitreAuteur(request.getParameter("titre"),request.getParameter("auteur")));
 				}
 				else
-					request.setAttribute("livresRecherches", Operation.getLivresParTitre(request.getParameter("titre")));
+					request.setAttribute("livresRecherches", Livre.getLivresParTitre(request.getParameter("titre")));
 			}
 			else {
-				request.setAttribute("livresRecherches", Operation.getLivresParAuteur(request.getParameter("auteur")));
+				request.setAttribute("livresRecherches", Livre.getLivresParAuteur(request.getParameter("auteur")));
 			}
 		}
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Recherche.jsp");
@@ -53,7 +53,7 @@ public class ServletRecherche extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
-		Operation.nouvelleReservation(Operation.getUtilisateurParIdentifiant((String)session.getAttribute("id")), Operation.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
+		Operation.nouvelleReservation(Utilisateur.getUtilisateurParIdentifiant((String)session.getAttribute("id")), Livre.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
 		doGet(request, response);
 	}
 

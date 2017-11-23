@@ -14,9 +14,6 @@ public class Operation {
 	
 	private static int nextId = 0;
 
-	private static HashMap<String,Utilisateur> listeUtilisateurs = new HashMap<String,Utilisateur>();
-	private static HashMap<Integer,Livre> listeLivres = new HashMap<Integer,Livre>();
-
 	private static HashMap<Integer,Operation> reservations = new HashMap<Integer,Operation>();
 	private static HashMap<Integer,Operation> emprunts = new HashMap<Integer,Operation>();
 	
@@ -43,21 +40,9 @@ public class Operation {
 		return nextId++;
 	}
 	
-	public static Utilisateur getUtilisateurParIdentifiant(String identifiant) {
-		return listeUtilisateurs.get(identifiant);
-	}
-	
-	public static void addLivreToListeLivres(Livre newLivre) {
-		listeLivres.put(newLivre.getId(), newLivre);
-	}
-	
-	public static void addUtilisateurToListeUtilisateurs(Utilisateur newUtilisateur) {
-		listeUtilisateurs.put(newUtilisateur.getIdentifiant(), newUtilisateur);
-	}
-	
 	public static boolean nouvelleReservation(Utilisateur reservant, Livre livre) {
 		Operation myOperation = new Operation(livre, reservant);
-		if(listeLivres.get(livre.getId()).emprunterOuReserver()) {
+		if(Livre.getListeLivres().get(livre.getId()).emprunterOuReserver()) {
 			reservations.put(myOperation.id, myOperation);
 			return true;
 		}
@@ -66,7 +51,7 @@ public class Operation {
 	
 	public static boolean nouvelEmprunt(Utilisateur emprunteur, Livre livre) {
 		Operation myOperation = new Operation(livre, emprunteur);
-		if(listeLivres.get(livre.getId()).emprunterOuReserver()) {
+		if(Livre.getListeLivres().get(livre.getId()).emprunterOuReserver()) {
 			emprunts.put(myOperation.getId(), myOperation);
 			return true;
 		}
@@ -75,18 +60,14 @@ public class Operation {
 	
 	public static boolean annulerReservation(int operationId) {
 		Operation ope = reservations.get(operationId);
-		listeLivres.get(ope.getLivre().getId()).restituerOuAnnulerReservation();
+		Livre.getListeLivres().get(ope.getLivre().getId()).restituerOuAnnulerReservation();
 		return reservations.remove(ope.getId(), ope);
 	}
 	
 	public static boolean annulerEmprunt(int operationId) {
 		Operation ope = reservations.get(operationId);
-		getLivreParId(ope.getLivre().getId()).restituerOuAnnulerReservation();
+		Livre.getLivreParId(ope.getLivre().getId()).restituerOuAnnulerReservation();
 		return reservations.remove(ope.getId(), ope);
-	}
-	
-	public static Livre getLivreParId(int id) {
-		return listeLivres.get(id);
 	}
 	
 	public static Operation[] getLivresFromReservationsByUtilisateur(String utilisateurIdentifiant) {
@@ -109,54 +90,5 @@ public class Operation {
 		    }
 		}
 		return empruntsFiltres.toArray(new Operation[empruntsFiltres.size()]);
-	}
-	
-	private static List<Livre> getListLivresParAuteur(String auteur) {
-		List<Livre> livresFiltres = new ArrayList<Livre>();
-		for(Map.Entry<Integer, Livre> entry : listeLivres.entrySet()) {
-		    Livre value = entry.getValue();
-		    if(value.getAuteur().equals(auteur)) {
-		    		livresFiltres.add(value);
-		    }
-		}
-		return livresFiltres;
-	}
-	
-	public static Livre[] getLivresParAuteur(String auteur) {
-		List<Livre> livresFiltres = getListLivresParAuteur(auteur);
-		return livresFiltres.toArray(new Livre[livresFiltres.size()]);
-	}
-	
-	private static List<Livre> getListLivresParTitre(String titre) {
-		List<Livre> livresFiltres = new ArrayList<Livre>();
-		for(Map.Entry<Integer, Livre> entry : listeLivres.entrySet()) {
-		    Livre value = entry.getValue();
-		    if(value.getTitre().equals(titre)) {
-		    		livresFiltres.add(value);
-		    }
-		}
-		return livresFiltres;
-	}
-	
-	public static Livre[] getLivresParTitre(String titre) {
-		List<Livre> livresFiltres = getListLivresParTitre(titre);
-		return livresFiltres.toArray(new Livre[livresFiltres.size()]);
-	}
-	
-	public static Livre[] getLivresParTitreAuteur(String titre, String auteur) {
-		List<Livre> livresFiltres = getListLivresParTitre(titre);		 
-		Iterator<Livre> it = livresFiltres.iterator();
-		while (it.hasNext()) {
-			Livre livre = it.next();
-			if (livre.getAuteur().equals(auteur)) {
-				it.remove();
-			}
-		}
-		return livresFiltres.toArray(new Livre[livresFiltres.size()]);
-	}
-	
-	public static Utilisateur[] getUtilisateurs() {
-		Collection<Utilisateur> values = listeUtilisateurs.values();
-	    return values.toArray(new Utilisateur[values.size()]);
 	}
 }

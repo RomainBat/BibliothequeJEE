@@ -24,8 +24,8 @@ public class ServletConnexion extends HttpServlet {
     public ServletConnexion() {
         super();        
         //TODO : Remove this
-		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
-		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("John","user","Utilisateur Random", false));
+		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
+		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("John","user","Utilisateur Random", false));
     }
 
 	/**
@@ -45,8 +45,8 @@ public class ServletConnexion extends HttpServlet {
 		String mdp = request.getParameter("mdp");
 		Utilisateur user;
 		if (id != null) {
-			if(Operation.getUtilisateurParIdentifiant(id) != null) {
-				user = Operation.getUtilisateurParIdentifiant(id);
+			if(Utilisateur.getUtilisateurParIdentifiant(id) != null) {
+				user = Utilisateur.getUtilisateurParIdentifiant(id);
 				if(user.getMdp().equals(mdp)) {
 					session = request.getSession();
 					session.setAttribute("id", id);
