@@ -3,9 +3,7 @@
 <%@ page import="biblipackage.Livre" %>
 <%
 String userId = null;
-if(session.getAttribute("id") == null){
-	response.sendRedirect("Connexion");
-} else {
+if(session.getAttribute("id") != null){
 	userId = (String) session.getAttribute("id");
 }
 
