@@ -15,10 +15,19 @@
 						<nav>
 							<ul>
 								<li><a href="Recherche">Recherche</a></li>
+								<% if (session == null){%>
+								<li>Pas de session</li>
+								<%}  if (session.getAttribute("id") == null){ %>
 								<li><a href="Connexion">Connexion</a></li>
+								<% } else { %>
+									<% if ((boolean)session.getAttribute("isBibliothecaire")) { %>
+								<li><a href="Gestion">Gestion des emprunts</a></li>
+								<li><a href="Adherents">Gestion des adhérents</a></li>
+									<% } else { %>
 								<li><a href="Profil">Mon compte</a></li>
-								<li><a href="Gestion">Gestion des adhérents</a></li>
-								<li><a href="Emprunts">Gestion des emprunts</a></li>
+									<% } %>
+								<li><a href="Connexion">Déconnexion</a></li>
+								<% } %>
 							</ul>
 						</nav>
 					</header>

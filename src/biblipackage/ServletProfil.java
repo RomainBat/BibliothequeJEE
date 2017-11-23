@@ -26,8 +26,8 @@ public class ServletProfil extends HttpServlet {
 		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
 		Operation.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
 		Operation.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
-		Operation.nouvelleReservation(Operation.getUtilisateurParIdentifiant("Admin"), Operation.getLivreParId(1));
-		Operation.nouvelEmprunt(Operation.getUtilisateurParIdentifiant("Admin"), Operation.getLivreParId(2));
+		Operation.nouvelleReservation(Operation.getUtilisateurParIdentifiant("Admin"), Operation.getLivreParId(0));
+		Operation.nouvelEmprunt(Operation.getUtilisateurParIdentifiant("Admin"), Operation.getLivreParId(1));
     }
 
 	/**
@@ -48,7 +48,7 @@ public class ServletProfil extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if ( request.getParameter("resa") != null ) {
-			Operation.annulerOperation(Integer.parseInt(request.getParameter("resa")));
+			Operation.annulerReservation(Integer.parseInt(request.getParameter("resa")));
 		}
 		doGet(request, response);
 	}

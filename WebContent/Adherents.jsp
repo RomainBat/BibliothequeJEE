@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="biblipackage.Utilisateur, biblipackage.Livre" %>
+<%@ page import="biblipackage.Operation, biblipackage.Utilisateur, biblipackage.Livre" %>
 <%
 String userId = null;
 if(session.getAttribute("id") == null){
@@ -12,8 +12,8 @@ if(session.getAttribute("id") == null){
 }
 
 Utilisateur adherents[] = (Utilisateur[]) request.getAttribute("adherents");
-Livre livresEmpruntes[] = (Livre[]) request.getAttribute("livresEmpruntes");
-Livre livresReserves[] = (Livre[]) request.getAttribute("livresReserves");
+Operation emprunts[] = (Operation[]) request.getAttribute("livresEmpruntes");
+Operation reservations[] = (Operation[]) request.getAttribute("livresReserves");
 Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 %>
 
@@ -23,12 +23,14 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 	
 	<h1>Espace bibliothécaires</h1>
 	<h2>Gestion des adhérents</h2>
-	<form action="Gestion">
-		<h3>Adhérent</h3>
+	<form action="Adherents" method="POST">
+		<h3>Nom de l'adhérent</h3>
 		<select name="adherent">
-			<%for(int i = 0; i<adherents.length; i++){
+			<% if(adherents != null) {
+			for(int i = 0; i<adherents.length; i++){
 				Utilisateur adherent = adherents[i];%>
-			<option value="<%= adherent.getIdentifiant() %>"><%= adherent.getNom() %></option>
+			<option <%= adherent.getIdentifiant() == request.getAttribute("selectedAdherent") ? "selected" : ""%> value="<%= adherent.getIdentifiant() %>"><%= adherent.getNom() %></option>
+			<% } %>
 			<% } %>
 		</select>
 		<button type="submit">OK</button>
@@ -36,61 +38,70 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 	<% if(request.getParameter("adherent") != null){%>
 	<h3>Emprunts et réservations</h3>
 	<ul class="liste-emprunts">
-	<% for(int i = 0; i<livresReserves.length; i++){
-		Livre livre = livresReserves[i];%>
+	<% if(reservations != null) {
+	for(int i = 0; i<reservations.length; i++){
+		Livre livre = reservations[i].getLivre();%>
 		<li class="reservation">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
-			<form action="Gestion" method="POST">
+			<%-- TODO: Find why this doesn't pass parameters --%>
+			<form action="Adherents" method="POST">
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
+				<input type="hidden" name="operation" value="<%=reservations[i].getId()%>"/>
+				<input type="hidden" name="typeOperation" value="emprunt"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<button type="submit">Emprunter</button>
 			</form>
 		</li>
 	<% } %>
-	<% for(int i = 0; i<livresEmpruntes.length; i++){
-		Livre livre = livresEmpruntes[i];%>
+	<% } %>
+	<% if(emprunts != null) {
+	for(int i = 0; i<emprunts.length; i++){
+		Livre livre = emprunts[i].getLivre();%>
 		<li class="reservation">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
-			<form action="Gestion" method="POST">
+			<form action="Adherents" method="POST">
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
+				<input type="hidden" name="operation" value="<%=reservations[i].getId()%>"/>
+				<input type="hidden" name="typeOperation" value="restitution"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<button type="submit">Restituer</button>
 			</form>
 		</li>
 	<% } %>
+	<% } %>
 	</ul>
-	<%}%>
-	<%if(request.getParameter("auteur") != null || request.getParameter("titre") != null){%>
 	<h3>Nouvel emprunt</h3>
-	<form action="Gestion">
+	<form action="Adherents" method="POST">
 		<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
-		<label for="titre">Titre :</label><input type="text" name="titre">
-		<label for="auteur">Auteur :</label><input type="text" name="auteur">
+		<label for="titre">Titre :</label><input type="text" name="titre" value="<%=request.getParameter("titre")%>">
+		<label for="auteur">Auteur :</label><input type="text" name="auteur" value="<%=request.getParameter("auteur")%>">
 		<button type="submit">Rechercher</button>
 	</form>
 	<ul class="liste-match">
-	<% for(int i = 0; i<livresRecherches.length; i++){
+	<% if(livresRecherches != null) {
+	for(int i = 0; i<livresRecherches.length; i++){
 		Livre livre = livresRecherches[i];%>
 		<li class="match">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
 			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
 			<% if (livre.getNb_restant()>0) { %>
-			<form action="Gestion" method="POST">
+			<form action="Adherents" method="POST">
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>
-				<input type="hidden" name="titre" value="<%=request.getParameter("titre")%>"/>
+				<input type="hidden" name="titre" value="<%=request.getParameter("titre") == null ? "" : request.getParameter("titre")%>"/>
 				<% } if (request.getParameter("auteur") != null){ %> 
-				<input type="hidden" name="auteur" value="<%=request.getParameter("auteur")%>"/>
+				<input type="hidden" name="auteur" value="<%=request.getParameter("auteur") == null ? "" : request.getParameter("auteur")%>"/>
 				<% } %>
 				<button type="submit">Emprunter</button>
 			</form>
 			<% } %>
 		</li>
 	<% } %>
-	</ul>
 	<% } %>
+	</ul>
+	<%}%>
 	<jsp:include page="includes/footer.jsp" />

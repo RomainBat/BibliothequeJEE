@@ -1,6 +1,7 @@
 package biblipackage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -66,15 +67,21 @@ public class Operation {
 	public static boolean nouvelEmprunt(Utilisateur emprunteur, Livre livre) {
 		Operation myOperation = new Operation(livre, emprunteur);
 		if(listeLivres.get(livre.getId()).emprunterOuReserver()) {
-			emprunts.put(myOperation.id, myOperation);
+			emprunts.put(myOperation.getId(), myOperation);
 			return true;
 		}
 		else return false;
 	}
 	
-	public static boolean annulerOperation(int operationId) {
+	public static boolean annulerReservation(int operationId) {
 		Operation ope = reservations.get(operationId);
 		listeLivres.get(ope.getLivre().getId()).restituerOuAnnulerReservation();
+		return reservations.remove(ope.getId(), ope);
+	}
+	
+	public static boolean annulerEmprunt(int operationId) {
+		Operation ope = reservations.get(operationId);
+		getLivreParId(ope.getLivre().getId()).restituerOuAnnulerReservation();
 		return reservations.remove(ope.getId(), ope);
 	}
 	
@@ -146,5 +153,10 @@ public class Operation {
 			}
 		}
 		return livresFiltres.toArray(new Livre[livresFiltres.size()]);
+	}
+	
+	public static Utilisateur[] getUtilisateurs() {
+		Collection<Utilisateur> values = listeUtilisateurs.values();
+	    return values.toArray(new Utilisateur[values.size()]);
 	}
 }

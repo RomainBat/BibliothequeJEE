@@ -16,7 +16,8 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/Connexion")
 public class ServletConnexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+	HttpSession session;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -24,6 +25,7 @@ public class ServletConnexion extends HttpServlet {
         super();        
         //TODO : Remove this
 		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
+		Operation.addUtilisateurToListeUtilisateurs(new Utilisateur("John","user","Utilisateur Random", false));
     }
 
 	/**
@@ -46,7 +48,7 @@ public class ServletConnexion extends HttpServlet {
 			if(Operation.getUtilisateurParIdentifiant(id) != null) {
 				user = Operation.getUtilisateurParIdentifiant(id);
 				if(user.getMdp().equals(mdp)) {
-					HttpSession session = request.getSession();
+					session = request.getSession();
 					session.setAttribute("id", id);
 					session.setAttribute("isBibliothecaire",user.getIsBibliothecaire());
 					session.setAttribute("nom",user.getNom());
