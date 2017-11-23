@@ -1,9 +1,7 @@
 package biblipackage;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -60,14 +58,14 @@ public class Operation {
 	
 	public static boolean annulerReservation(int operationId) {
 		Operation ope = reservations.get(operationId);
-		Livre.getListeLivres().get(ope.getLivre().getId()).restituerOuAnnulerReservation();
+		ope.getLivre().restituerOuAnnulerReservation();
 		return reservations.remove(ope.getId(), ope);
 	}
 	
 	public static boolean annulerEmprunt(int operationId) {
-		Operation ope = reservations.get(operationId);
-		Livre.getLivreParId(ope.getLivre().getId()).restituerOuAnnulerReservation();
-		return reservations.remove(ope.getId(), ope);
+		Operation ope = emprunts.get(operationId);
+		ope.getLivre().restituerOuAnnulerReservation();
+		return emprunts.remove(ope.getId(), ope);
 	}
 	
 	public static Operation[] getLivresFromReservationsByUtilisateur(String utilisateurIdentifiant) {

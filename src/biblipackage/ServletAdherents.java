@@ -27,6 +27,7 @@ public class ServletAdherents extends HttpServlet {
 		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("John","user","Utilisateur Random", false));
 		Livre.addLivreToListeLivres(new Livre("Les chaussettes chaudes","Charles Baudelaire",2));
 		Livre.addLivreToListeLivres(new Livre("La baignoire","Baudelaire",4));
+		Operation.nouvelEmprunt(Utilisateur.getUtilisateurParIdentifiant("John"), Livre.getLivreParId(1));
     }
 
 	/**
@@ -41,8 +42,11 @@ public class ServletAdherents extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession(false);
+		// On set la liste utilisateurs
 		request.setAttribute("adherents", Utilisateur.getUtilisateurs());
+		// Si un utilisateur est sélectionné
 		if ( request.getParameter("adherent") != null) {
+			// On récupère ses réservations et emprunts
 			request.setAttribute("livresReserves", Operation.getLivresFromReservationsByUtilisateur(request.getParameter("adherent")));
 			request.setAttribute("livresEmpruntes", Operation.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
 			request.setAttribute("selectedAdherent", request.getParameter("adherent"));
@@ -51,14 +55,17 @@ public class ServletAdherents extends HttpServlet {
 			if(request.getParameter("typeOperation") != null) {
 				if(request.getParameter("typeOperation").equals("emprunt")) {	
 					// Suite à une réservation
-					if (request.getParameter("operation") != null) {
-						Operation.annulerReservation(Integer.parseInt(request.getParameter("operation")));
+					if (request.getParameter("reservation") != null) {
+						Operation.annulerReservation(Integer.parseInt(request.getParameter("reservation")));
+						request.setAttribute("livresReserves", Operation.getLivresFromReservationsByUtilisateur(request.getParameter("adherent")));
 					}
 					Operation.nouvelEmprunt(Utilisateur.getUtilisateurParIdentifiant(request.getParameter("adherent")), Livre.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
+					request.setAttribute("livresEmpruntes", Operation.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
 				}
 				// En cas de restitution
 				else if (request.getParameter("typeOperation").equals("restitution")) {
-					Operation.annulerEmprunt(Integer.parseInt(request.getParameter("operation")));
+					Operation.annulerEmprunt(Integer.parseInt(request.getParameter("emprunt")));
+					request.setAttribute("livresEmpruntes", Operation.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
 				}
 			}
 			// En cas de recherche

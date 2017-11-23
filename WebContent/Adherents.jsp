@@ -47,7 +47,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 			<%-- TODO: Find why this doesn't pass parameters --%>
 			<form action="Adherents" method="POST">
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
-				<input type="hidden" name="operation" value="<%=reservations[i].getId()%>"/>
+				<input type="hidden" name="reservation" value="<%=reservations[i].getId()%>"/>
 				<input type="hidden" name="typeOperation" value="emprunt"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<button type="submit">Emprunter</button>
@@ -63,7 +63,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 			<span class="titre"><%=livre.getTitre()%></span>
 			<form action="Adherents" method="POST">
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
-				<input type="hidden" name="operation" value="<%=reservations[i].getId()%>"/>
+				<input type="hidden" name="emprunt" value="<%=emprunts[i].getId()%>"/>
 				<input type="hidden" name="typeOperation" value="restitution"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<button type="submit">Restituer</button>
@@ -90,6 +90,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 			<% if (livre.getNb_restant()>0) { %>
 			<form action="Adherents" method="POST">
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
+				<input type="hidden" name="typeOperation" value="restitution"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>
 				<input type="hidden" name="titre" value="<%=request.getParameter("titre") == null ? "" : request.getParameter("titre")%>"/>
