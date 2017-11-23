@@ -27,8 +27,9 @@ Operation reservations[] = (Operation[]) request.getAttribute("reservations");
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
 			<form action="Profil" method="POST">
+				<input type="hidden" name="formulaire" value="profil_annuler">
 				<input type="hidden" name="resa" value="<%=reservation.getId()%>"/>
-				<button type="submit">Annuler la réservation</button>
+				<button type="submit">Annuler</button>
 			</form>
 		</li>
 	<% } %>

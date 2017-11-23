@@ -38,6 +38,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 	<h3>Gérer les exemplaires</h3>
 
 	<form action="Gestion" method="POST">
+		<input type="hidden" name="formulaire" value="gestion_rechercher">
 		<label for="auteur">Auteur :</label> <input type="text" name="auteur">
 		<label for="titre">Titre :</label> <input type="text" name="titre">
 		<button type="submit">Rechercher</button>
