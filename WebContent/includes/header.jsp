@@ -11,13 +11,11 @@
 				
 				<body>
 					<header>
-						<div><%=session.getAttribute("nom")%></div>
+						<div><%= session.getAttribute("nom") == null ? "Mode déconnecté" : session.getAttribute("nom")%></div>
 						<nav>
 							<ul>
 								<li><a href="Recherche">Recherche</a></li>
-								<% if (session == null){%>
-								<li>Pas de session</li>
-								<%}  if (session.getAttribute("id") == null){ %>
+								<% if (session.getAttribute("id") == null){ %>
 								<li><a href="Connexion">Connexion</a></li>
 								<% } else { %>
 									<% if ((boolean)session.getAttribute("isBibliothecaire")) { %>
@@ -26,7 +24,7 @@
 									<% } else { %>
 								<li><a href="Profil">Mon compte</a></li>
 									<% } %>
-								<li><a href="Connexion">Déconnexion</a></li>
+								<li><a href="Deconnexion">Déconnexion</a></li>
 								<% } %>
 							</ul>
 						</nav>
