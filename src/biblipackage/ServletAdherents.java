@@ -69,7 +69,7 @@ public class ServletAdherents extends HttpServlet {
 				}
 			}
 			// En cas de recherche
-			request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
+				request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 		}
 
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Adherents.jsp");

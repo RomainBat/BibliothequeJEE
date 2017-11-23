@@ -16,9 +16,10 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 
 	<h1>Rechercher un livre</h1>
 	<form action="Recherche" method="GET">
-	  <label for="auteur">Auteur :</label> <input type="text" name="auteur">
-	  <label for="titre">Titre :</label> <input type="text" name="titre">
-	  <button type="submit">Rechercher</button>
+		<input type="hidden" name="formulaire" value="recherche_rechercher"/>
+	  	<label for="auteur">Auteur :</label> <input type="text" name="auteur">
+	  	<label for="titre">Titre :</label> <input type="text" name="titre">
+	  	<button type="submit">Rechercher</button>
 	</form>
 	<h1>Livres correspondants à votre recherche</h1>
 	<ul class="liste-match">
@@ -31,6 +32,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
 			<% if (livre.getNb_restant()>0 && userId != null) { %>
 			<form action="Recherche" method="POST">
+				<input type="hidden" name="formulaire" value="recherche_reserver"/>			
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>
 				<input type="hidden" name="titre" value="<%=request.getParameter("titre")%>"/>
