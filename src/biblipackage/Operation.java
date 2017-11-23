@@ -65,6 +65,7 @@ public class Operation {
 	public static boolean annulerEmprunt(int operationId) {
 		Operation ope = emprunts.get(operationId);
 		ope.getLivre().restituerOuAnnulerReservation();
+		
 		return emprunts.remove(ope.getId(), ope);
 	}
 	

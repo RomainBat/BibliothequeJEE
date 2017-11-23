@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class ServletEmprunts
  */
-@WebServlet("/Adherents")
+@WebServlet("/")
 public class ServletAdherents extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	HttpSession session;
@@ -69,18 +69,7 @@ public class ServletAdherents extends HttpServlet {
 				}
 			}
 			// En cas de recherche
-			if ( request.getParameter("titre") != null || request.getParameter("auteur") != null) {
-				if(!request.getParameter("titre").equals("")) {
-					if (!request.getParameter("auteur").equals("")) {
-						request.setAttribute("livresRecherches", Livre.getLivresParTitreAuteur(request.getParameter("titre"),request.getParameter("auteur")));
-					}
-					else
-						request.setAttribute("livresRecherches", Livre.getLivresParTitre(request.getParameter("titre")));
-				}
-				else {
-					request.setAttribute("livresRecherches", Livre.getLivresParAuteur(request.getParameter("auteur")));
-				}
-			}
+			request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 		}
 
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Adherents.jsp");

@@ -32,18 +32,7 @@ public class ServletRecherche extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if ( request.getParameter("titre") != null || request.getParameter("auteur") != null) {
-			if(!request.getParameter("titre").equals("")) {
-				if (!request.getParameter("auteur").equals("")) {
-					request.setAttribute("livresRecherches", Livre.getLivresParTitreAuteur(request.getParameter("titre"),request.getParameter("auteur")));
-				}
-				else
-					request.setAttribute("livresRecherches", Livre.getLivresParTitre(request.getParameter("titre")));
-			}
-			else {
-				request.setAttribute("livresRecherches", Livre.getLivresParAuteur(request.getParameter("auteur")));
-			}
-		}
+		request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Recherche.jsp");
 		rd.forward(request, response);		
 	}

@@ -128,11 +128,28 @@ public class Livre {
 		Iterator<Livre> it = livresFiltres.iterator();
 		while (it.hasNext()) {
 			Livre livre = it.next();
-			if (livre.getAuteur().equals(auteur)) {
+			if (!livre.getAuteur().equals(auteur)) {
 				it.remove();
 			}
 		}
 		return livresFiltres.toArray(new Livre[livresFiltres.size()]);
+	}
+	
+	public static Livre[] rechercherLivres(String titre, String auteur) {
+		// TODO Enlever si on appelle la methode que audn on la recherche
+		if ( titre != null || auteur != null) {
+			if(!titre.equals("")) {
+				if (!auteur.equals("")) {
+					return Livre.getLivresParTitreAuteur(titre,auteur);
+				}
+				else
+					return Livre.getLivresParTitre(titre);
+			}
+			else {
+				return Livre.getLivresParAuteur(auteur);
+			}
+		}
+		return null;
 	}
 	
 }

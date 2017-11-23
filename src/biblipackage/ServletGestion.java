@@ -51,16 +51,7 @@ public class ServletGestion extends HttpServlet {
 				}
 				// Faire une recherche en fonction des paramètres d'entrée
 				else {
-					if(!request.getParameter("titre").equals("")) {
-						if (!request.getParameter("auteur").equals("")) {
-							request.setAttribute("livresRecherches", Livre.getLivresParTitreAuteur(request.getParameter("titre"),request.getParameter("auteur")));
-						}
-						else
-							request.setAttribute("livresRecherches", Livre.getLivresParTitre(request.getParameter("titre")));
-					}
-					else {
-						request.setAttribute("livresRecherches", Livre.getLivresParAuteur(request.getParameter("auteur")));
-					}
+					request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 				}
 			}
 		}
