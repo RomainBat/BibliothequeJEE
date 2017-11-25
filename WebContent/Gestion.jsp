@@ -21,7 +21,8 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 	<h2>Gestion des emprunts</h2>
 
 	<h3>Ajouter un livre</h3>
-	<form action="Gestion" method="POST">
+	<form action="?page=Profil" method="POST">
+	<input type="hidden" name="formulaire" value="gestion_ajouter">
 		<label for="auteur">Auteur :</label> <input type="text" name="auteur">
 		<label for="titre">Titre :</label> <input type="text" name="titre">
 		<label for="nombre">Nombre :</label>
@@ -37,7 +38,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 
 	<h3>Gérer les exemplaires</h3>
 
-	<form action="Gestion" method="POST">
+	<form action="" method="POST">
 		<input type="hidden" name="formulaire" value="gestion_rechercher">
 		<label for="auteur">Auteur :</label> <input type="text" name="auteur">
 		<label for="titre">Titre :</label> <input type="text" name="titre">
@@ -53,6 +54,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
 			<% if (livre.getNb_restant()>0) { %>
 			<form action="Gestion" method="POST">
+				<input type="hidden" name="formulaire" value="gestion_valider">
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>
 				<input type="hidden" name="titre" value="<%=request.getParameter("titre")%>"/>
@@ -67,7 +69,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 					<option value="100">100</option>
 				</select>
 				<% } %>
-				<button type="submit">OK</button>
+				<button type="submit">Valider</button>
 			</form>
 			<% } %>
 		</li>

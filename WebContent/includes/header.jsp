@@ -14,17 +14,17 @@
 						<div><%= session.getAttribute("nom") == null ? "Mode déconnecté" : session.getAttribute("nom")%></div>
 						<nav>
 							<ul>
-								<li><a href="Recherche">Recherche</a></li>
+								<li><a href="/BibliothequeJEE?page=Recherche">Recherche</a></li>
 								<% if (session.getAttribute("id") == null){ %>
-								<li><a href="Connexion">Connexion</a></li>
+								<li><a href="/BibliothequeJEE?page=Connexion">Connexion</a></li>
 								<% } else { %>
 									<% if ((boolean)session.getAttribute("isBibliothecaire")) { %>
-								<li><a href="Gestion">Gestion des emprunts</a></li>
-								<li><a href="Adherents">Gestion des adhérents</a></li>
+								<li><a href="/BibliothequeJEE?page=Gestion">Gestion des emprunts</a></li>
+								<li><a href="/BibliothequeJEE?page=Adherents">Gestion des adhérents</a></li>
 									<% } else { %>
-								<li><a href="Profil">Mon compte</a></li>
+								<li><a href="/BibliothequeJEE?page=Profil">Mon compte</a></li>
 									<% } %>
-								<li><a href="Deconnexion">Déconnexion</a></li>
+								<li><a href="/BibliothequeJEE?page=Deconnexion">Déconnexion</a></li>
 								<% } %>
 							</ul>
 						</nav>

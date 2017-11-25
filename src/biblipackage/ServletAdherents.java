@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class ServletEmprunts
  */
-@WebServlet("/")
+@WebServlet("/Adherents")
 public class ServletAdherents extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	HttpSession session;
