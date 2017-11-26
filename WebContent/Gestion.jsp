@@ -21,7 +21,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 	<h2>Gestion des emprunts</h2>
 
 	<h3>Ajouter un livre</h3>
-	<form action="?page=Profil" method="POST">
+	<form action="Site?page=Gestion" method="POST">
 	<input type="hidden" name="formulaire" value="gestion_ajouter">
 		<label for="auteur">Auteur :</label> <input type="text" name="auteur">
 		<label for="titre">Titre :</label> <input type="text" name="titre">
@@ -38,7 +38,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 
 	<h3>Gérer les exemplaires</h3>
 
-	<form action="" method="POST">
+	<form action="Site?page=Gestion" method="POST">
 		<input type="hidden" name="formulaire" value="gestion_rechercher">
 		<label for="auteur">Auteur :</label> <input type="text" name="auteur">
 		<label for="titre">Titre :</label> <input type="text" name="titre">
@@ -52,8 +52,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
 			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
-			<% if (livre.getNb_restant()>0) { %>
-			<form action="Gestion" method="POST">
+			<form action="Site?page=Gestion" method="POST">
 				<input type="hidden" name="formulaire" value="gestion_valider">
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>
@@ -62,7 +61,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 				<input type="hidden" name="auteur" value="<%=request.getParameter("auteur")%>"/>
 				<label for="difference">Ajouter ou retirer :</label>
 				<select name="difference">
-					<% for(int j =-10; j<10; j++){ %>
+					<% for(int j = - livre.getNb_restant(); j<10; j++){ %>
 					<option <% if (j==0) out.print("selected"); %> value="<%= j %>"> <%= j %></option>
 					<% } %>
 					<option value="50">50</option>
@@ -71,7 +70,6 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 				<% } %>
 				<button type="submit">Valider</button>
 			</form>
-			<% } %>
 		</li>
 	<% } %>
 	<% } %>

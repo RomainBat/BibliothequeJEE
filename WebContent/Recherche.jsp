@@ -15,7 +15,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 	</jsp:include>
 
 	<h1>Rechercher un livre</h1>
-	<form action="?page=Recherche" method="POST">
+	<form action="Site?page=Recherche" method="POST">
 		<input type="hidden" name="formulaire" value="recherche_rechercher"/>
 	  	<label for="auteur">Auteur :</label> <input type="text" name="auteur">
 	  	<label for="titre">Titre :</label> <input type="text" name="titre">
@@ -30,8 +30,8 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
 			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
-			<% if (livre.getNb_restant()>0 && userId != null) { %>
-			<form action="?page=Recherche" method="POST">
+			<% if (livre.getNb_restant()>0 && session.getAttribute("id") != null && (boolean)session.getAttribute("isBibliothecaire") == false) { %>
+			<form action="Site?page=Recherche" method="POST">
 				<input type="hidden" name="formulaire" value="recherche_reserver"/>			
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>

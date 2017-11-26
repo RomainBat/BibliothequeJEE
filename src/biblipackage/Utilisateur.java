@@ -3,6 +3,8 @@ package biblipackage;
 import java.util.Collection;
 import java.util.HashMap;
 
+import javax.servlet.RequestDispatcher;
+
 public class Utilisateur {
 	private String identifiant;
 	private String mdp;
@@ -62,5 +64,18 @@ public class Utilisateur {
 	
 	public static void addUtilisateurToListeUtilisateurs(Utilisateur newUtilisateur) {
 		listeUtilisateurs.put(newUtilisateur.getIdentifiant(), newUtilisateur);
+	}
+	
+	public static Utilisateur utilisateurExiste(String id, String mdp) {
+		Utilisateur user;
+		if (id != null) {
+			if(Utilisateur.getUtilisateurParIdentifiant(id) != null) {
+				user = Utilisateur.getUtilisateurParIdentifiant(id);
+				if(user.getMdp().equals(mdp)) {
+					return user;
+				}
+			}
+		}
+		return null;
 	}
 }

@@ -45,6 +45,15 @@ public class Livre {
 		return this.nb_total;
 	}
 	
+	public boolean setNb_max(int nb) {
+		if (nb < 0)
+			return false;
+		else {
+			this.nb_total = nb;
+			return true;
+		}		
+	}
+	
 	public int getNb_restant() {
 		return this.nb_restant;
 	}
@@ -57,6 +66,12 @@ public class Livre {
 			this.nb_restant = nb;
 			return true;
 		}
+	}
+	
+	public static void modifierNombreExemplaires (int id, int diff) {
+		Livre livre = getLivreParId(id);
+		livre.setNb_max(livre.getNb_max() + diff);
+		livre.setNb_restant(livre.getNb_restant() + diff);
 	}
 	
 	public boolean emprunterOuReserver() {
@@ -77,14 +92,22 @@ public class Livre {
 			return false;
 	}
 	
-	//LIST OF LIVRE MANAGEMENT
+	//LISTE DE LIVRES MANAGEMENT
 	
 	public static HashMap<Integer,Livre> getListeLivres() {
 		return listeLivres;
 	}
 	
-	public static void addLivreToListeLivres(Livre newLivre) {
+	private static void addLivreAListeLivres(Livre newLivre) {
 		listeLivres.put(newLivre.getId(), newLivre);
+	}
+	
+	public static void creerNouveauLivre(String titre, String auteur, int nombre) {
+		if (!(titre.equals("") || auteur.equals(""))) {
+			if(nombre > 0 && getLivresParTitreAuteur(titre, auteur).length == 0) {
+				Livre.addLivreAListeLivres(new Livre(titre,auteur,nombre));				
+			}
+		}
 	}
 	
 	public static Livre getLivreParId(int id) {

@@ -24,7 +24,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 	<h1>Espace bibliothécaires</h1>
 	<h2>Gestion des adhérents</h2>
 		<h3>Nom de l'adhérent</h3>
-	<form action="?page=Adherents" method="POST">
+	<form action="Site?page=Adherents" method="POST">
 		<input type="hidden" name="formulaire" value="adherents_selectionner"/>
 		<select name="adherent">
 			<% if(adherents != null) {
@@ -45,11 +45,11 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 		<li class="reservation">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
-			<form action="?page=Adherents" method="POST">
+			<form action="Site?page=Adherents" method="POST">
 				<input type="hidden" name="formulaire" value="adherents_emprunter_dereserver"/>
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
 				<input type="hidden" name="reservation" value="<%=reservations[i].getId()%>"/>
-				<input type="hidden" name="typeOperation" value="emprunt"/>
+				<input type="hidden" name="type_operation" value="emprunt"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<button type="submit">Emprunter</button>
 			</form>
@@ -62,11 +62,11 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 		<li class="reservation">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
-			<form action="?page=Adherents" method="POST">
+			<form action="Site?page=Adherents" method="POST">
 				<input type="hidden" name="formulaire" value="adherents_restituer"/>
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
 				<input type="hidden" name="emprunt" value="<%=emprunts[i].getId()%>"/>
-				<input type="hidden" name="typeOperation" value="restitution"/>
+				<input type="hidden" name="type_operation" value="restitution"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<button type="submit">Restituer</button>
 			</form>
@@ -75,7 +75,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 	<% } %>
 	</ul>
 	<h3>Nouvel emprunt</h3>
-	<form action="?page=Adherents" method="POST">
+	<form action="Site?page=Adherents" method="POST">
 		<input type="hidden" name="formulaire" value="adherents_rechercher"/>
 		<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
 		<label for="titre">Titre :</label><input type="text" name="titre" value="<%=request.getParameter("titre")%>">
@@ -91,10 +91,10 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 			<span class="titre"><%=livre.getTitre()%></span>
 			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
 			<% if (livre.getNb_restant()>0) { %>
-			<form action="?page=Adherents" method="POST">
+			<form action="Site?page=Adherents" method="POST">
 				<input type="hidden" name="formulaire" value="adherents_emprunter"/>
 				<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
-				<input type="hidden" name="typeOperation" value="restitution"/>
+				<input type="hidden" name="type_operation" value="restitution"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>
 				<input type="hidden" name="titre" value="<%=request.getParameter("titre") == null ? "" : request.getParameter("titre")%>"/>

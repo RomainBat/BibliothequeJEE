@@ -6,7 +6,7 @@
 
 	<h1>Me connecter</h1>
 
-	<form action="/?page=Connexion" method="POST">
+	<form action="Site?page=Connexion" method="POST">
 		<input type="hidden" name="formulaire" value="connexion_connexion"/>
 		<label>Identifiant</label>
 		<input type="text" name="id"/>
