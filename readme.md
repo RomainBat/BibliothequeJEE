@@ -17,8 +17,8 @@ Une fois en place sur un serveur JEE, rendez-vous sur http://localhost:[port]/Bi
 L'application s'utilise en mode déconnecté avec la recherche de livre. Il faut se connecter pour avoir accès à d'autres fonctionnalités.
 
 Pour se connecter, utiliser les combinaisons identifiant | mot de passe suivants :
-* Biblitohécaire : Admin | root
-* Adhérent : John | user
+* **Biblitohécaire** : Admin | root
+* **Adhérent** : John | user
 
 ## Auteurs
 
