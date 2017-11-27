@@ -17,8 +17,8 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 	<h1>Rechercher un livre</h1>
 	<form action="Site?page=Recherche" method="POST">
 		<input type="hidden" name="formulaire" value="recherche_rechercher"/>
-	  	<label for="auteur">Auteur :</label> <input type="text" name="auteur">
-	  	<label for="titre">Titre :</label> <input type="text" name="titre">
+	  	<label for="auteur">Auteur :</label> <input type="text" name="auteur" value="<%=request.getParameter("auteur") == null ? "" : request.getParameter("auteur")%>">
+	  	<label for="titre">Titre :</label> <input type="text" name="titre" value="<%=request.getParameter("titre") == null ? "" : request.getParameter("titre")%>">
 	  	<button type="submit">Rechercher</button>
 	</form>
 	<h1>Livres correspondants à votre recherche</h1>
@@ -29,7 +29,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 		<li class="match">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
-			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
+			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s) sur <%=livre.getNb_max()%></span>
 			<% if (livre.getNb_restant()>0 && session.getAttribute("id") != null && (boolean)session.getAttribute("isBibliothecaire") == false) { %>
 			<form action="Site?page=Recherche" method="POST">
 				<input type="hidden" name="formulaire" value="recherche_reserver"/>			

@@ -20,7 +20,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 	<h1>Espace bibliothécaires</h1>
 	<h2>Gestion des emprunts</h2>
 
-	<h3>Ajouter un livre</h3>
+	<h3>Ajouter un nouveau livre</h3>
 	<form action="Site?page=Gestion" method="POST">
 	<input type="hidden" name="formulaire" value="gestion_ajouter">
 		<label for="auteur">Auteur :</label> <input type="text" name="auteur">
@@ -40,8 +40,8 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 
 	<form action="Site?page=Gestion" method="POST">
 		<input type="hidden" name="formulaire" value="gestion_rechercher">
-		<label for="auteur">Auteur :</label> <input type="text" name="auteur">
-		<label for="titre">Titre :</label> <input type="text" name="titre">
+		<label for="auteur">Auteur :</label> <input type="text" name="auteur" value="<%=request.getParameter("auteur") == null ? "" : request.getParameter("auteur")%>">
+		<label for="titre">Titre :</label> <input type="text" name="titre" value="<%=request.getParameter("titre") == null ? "" : request.getParameter("titre")%>">
 		<button type="submit">Rechercher</button>
 	</form>
 	<ul class="liste-match">
@@ -51,7 +51,7 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 		<li class="match">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
-			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
+			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s) sur <%=livre.getNb_max()%></span>
 			<form action="Site?page=Gestion" method="POST">
 				<input type="hidden" name="formulaire" value="gestion_valider">
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
@@ -69,6 +69,16 @@ Livre[] livresRecherches = (Livre[]) request.getAttribute("livresRecherches");
 				</select>
 				<% } %>
 				<button type="submit">Valider</button>
+			</form>
+			<form action="Site?page=Gestion" method="POST">
+				<input type="hidden" name="formulaire" value="gestion_supprimer">
+				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
+				<% if (request.getParameter("titre") != null){ %>
+				<input type="hidden" name="titre" value="<%=request.getParameter("titre")%>"/>
+				<% } if (request.getParameter("auteur") != null){ %> 
+				<input type="hidden" name="auteur" value="<%=request.getParameter("auteur")%>"/>
+				<% } %>
+				<button type="submit">Supprimer</button>
 			</form>
 		</li>
 	<% } %>

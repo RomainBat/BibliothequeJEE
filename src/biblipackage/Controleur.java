@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 /**
- * Servlet implementation class Controleur
+ * Servlet controlleur du site de gestion de la bibliothèque
+ * @author athouary
  */
 @WebServlet("/Site")
 public class Controleur extends HttpServlet {
@@ -40,6 +42,7 @@ public class Controleur extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Liens des différents templates
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession(false);
@@ -93,6 +96,7 @@ public class Controleur extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Gestion des formulaires
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession(false);
@@ -118,6 +122,10 @@ public class Controleur extends HttpServlet {
 			Livre.modifierNombreExemplaires(Integer.parseInt(request.getParameter("livre")), Integer.parseInt(request.getParameter("difference")));
 			request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 			break;
+		case "gestion_supprimer" :
+			Operation.supprimerLivre(Integer.parseInt(request.getParameter("livre")));
+			request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
+			break;
 		case "adherents_emprunter_dereserver" :
 			Operation.annulerReservation(Integer.parseInt(request.getParameter("reservation")));
 		case "adherents_emprunter" :
@@ -141,6 +149,14 @@ public class Controleur extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	/**
+	 * Tente de connecter un utilisateurs avec les identifiants fournis
+	 * @param id l'id fourni par l'utilisateur
+	 * @param mdp le mdp fourni par l'utilisateur
+	 * @param request la requête envoyée par le client
+	 * @return CONNEXION_ADMIN si l'utilisateur est connecté et administrateur, CONNEXION_UTILISATEUR sinon, CONNEXION_REFUSEE si les identifiants de correspondent pas à un utilisateur en base
+	 * @throws IOException
+	 */
 	private int connexion(String id, String mdp, HttpServletRequest request) throws IOException {
 		Utilisateur user = Utilisateur.utilisateurExiste(id,mdp);
 		if (user != null) {

@@ -78,8 +78,8 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 	<form action="Site?page=Adherents" method="POST">
 		<input type="hidden" name="formulaire" value="adherents_rechercher"/>
 		<input type="hidden" name="adherent" value="<%=request.getParameter("adherent")%>"/>
-		<label for="titre">Titre :</label><input type="text" name="titre" value="<%=request.getParameter("titre")%>">
-		<label for="auteur">Auteur :</label><input type="text" name="auteur" value="<%=request.getParameter("auteur")%>">
+		<label for="auteur">Auteur :</label><input type="text" name="auteur" value="<%=request.getParameter("auteur") == null ? "" : request.getParameter("auteur")%>">
+		<label for="titre">Titre :</label><input type="text" name="titre" value="<%=request.getParameter("titre") == null ? "" : request.getParameter("titre")%>">
 		<button type="submit">Rechercher</button>
 	</form>
 	<ul class="liste-match">
@@ -89,7 +89,7 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 		<li class="match">
 			<span class="auteur"><%=livre.getAuteur()%></span>
 			<span class="titre"><%=livre.getTitre()%></span>
-			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s)</span>
+			<span class="disponibilite"><%=livre.getNb_restant()%> exemplaire(s) disponible(s) sur <%=livre.getNb_max()%></span>
 			<% if (livre.getNb_restant()>0) { %>
 			<form action="Site?page=Adherents" method="POST">
 				<input type="hidden" name="formulaire" value="adherents_emprunter"/>
@@ -97,9 +97,9 @@ Livre livresRecherches[] = (Livre[]) request.getAttribute("livresRecherches");
 				<input type="hidden" name="type_operation" value="restitution"/>
 				<input type="hidden" name="livre" value="<%=livre.getId()%>"/>
 				<% if (request.getParameter("titre") != null){ %>
-				<input type="hidden" name="titre" value="<%=request.getParameter("titre") == null ? "" : request.getParameter("titre")%>"/>
-				<% } if (request.getParameter("auteur") != null){ %> 
-				<input type="hidden" name="auteur" value="<%=request.getParameter("auteur") == null ? "" : request.getParameter("auteur")%>"/>
+				<input type="hidden" name="titre" value="<%=request.getParameter("titre")%>"/>
+				<% } if (request.getParameter("auteur") != null){%> 
+				<input type="hidden" name="auteur" value="<%=request.getParameter("auteur")%>"/>
 				<% } %>
 				<button type="submit">Emprunter</button>
 			</form>
