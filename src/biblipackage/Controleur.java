@@ -33,7 +33,7 @@ public class Controleur extends HttpServlet {
     public Controleur() {
         super();
 		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
-		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Bob92","user","Utilisateur Random", false));
+		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Bob92","user","Utilisateur Commun", false));
 		Livre.creerNouveauLivre("Les chaussettes chaudes","Maurice",2);
 		Livre.creerNouveauLivre("La baignoire","Baudelaire",4);
 		Operation.nouvelleReservation(Utilisateur.getUtilisateurParIdentifiant("Bob92"), Livre.getLivreParId(0));
@@ -85,6 +85,8 @@ public class Controleur extends HttpServlet {
 				etatConnexion = NON_CONNECTE;
 				break;
 			default :
+				page = "/404.jsp";
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				break;
 			}
 		}

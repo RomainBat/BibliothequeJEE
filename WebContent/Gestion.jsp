@@ -3,9 +3,9 @@
 <%
 String userId = null;
 if(session.getAttribute("id") == null){
-	response.sendRedirect("Connexion");
+	response.sendRedirect("Site?page=Connexion");
 }else if (!(boolean)session.getAttribute("isBibliothecaire")) {
-	response.sendRedirect("Profil");
+	response.sendRedirect("Site?page=Profil");
 } else {
 	userId = (String) session.getAttribute("id");
 }

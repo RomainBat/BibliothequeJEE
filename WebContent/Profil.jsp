@@ -3,7 +3,7 @@
 <%
 String userId = null;
 if(session.getAttribute("id") == null){
-	response.sendRedirect("Connexion");
+	response.sendRedirect("Site?page=Connexion");
 }else {
 	userId = (String) session.getAttribute("id");
 }
