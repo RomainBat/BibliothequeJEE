@@ -196,7 +196,7 @@ public class Livre {
 		List<Livre> livresFiltres = new ArrayList<Livre>();
 		for(Map.Entry<Integer, Livre> entry : listeLivres.entrySet()) {
 		    Livre value = entry.getValue();
-		    if(value.getAuteur().equals(auteur)) {
+		    if(value.getAuteur().matches(".*" + auteur + ".*")) {
 		    		livresFiltres.add(value);
 		    }
 		}
@@ -222,7 +222,7 @@ public class Livre {
 		List<Livre> livresFiltres = new ArrayList<Livre>();
 		for(Map.Entry<Integer, Livre> entry : listeLivres.entrySet()) {
 		    Livre value = entry.getValue();
-		    if(value.getTitre().equals(titre)) {
+		    if(value.getTitre().matches(".*" + titre + ".*")) {
 		    		livresFiltres.add(value);
 		    }
 		}
@@ -250,7 +250,7 @@ public class Livre {
 		Iterator<Livre> it = livresFiltres.iterator();
 		while (it.hasNext()) {
 			Livre livre = it.next();
-			if (!livre.getAuteur().equals(auteur)) {
+			if (!livre.getAuteur().matches(".*" + auteur + ".*")) {
 				it.remove();
 			}
 		}
