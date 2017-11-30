@@ -1,6 +1,6 @@
 # Bibliothèque JEE
 
-Application web de gestion d'une bibliothèque.
+Application web de gestion d'une bibliothèque. Pour une raison de gestion de session, cette version n'est utilisable que par un client à la fois.
 
 ## Installation
 
