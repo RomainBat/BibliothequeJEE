@@ -71,7 +71,7 @@ public class Operation {
 	 */
 	public static boolean nouvelleReservation(Utilisateur reservant, Livre livre) {
 		Operation myOperation = new Operation(livre, reservant);
-		if(Livre.getListeLivres().get(livre.getId()).emprunterOuReserver()) {
+		if(LivreCollec.getListeLivres().get(livre.getId()).emprunterOuReserver()) {
 			reservations.put(myOperation.id, myOperation);
 			return true;
 		}
@@ -86,7 +86,7 @@ public class Operation {
 	 */
 	public static boolean nouvelEmprunt(Utilisateur emprunteur, Livre livre) {
 		Operation myOperation = new Operation(livre, emprunteur);
-		if(Livre.getListeLivres().get(livre.getId()).emprunterOuReserver()) {
+		if(LivreCollec.getListeLivres().get(livre.getId()).emprunterOuReserver()) {
 			emprunts.put(myOperation.getId(), myOperation);
 			return true;
 		}
@@ -153,7 +153,7 @@ public class Operation {
 	 * @param id l'identifiant du livre à supprimer
 	 */
 	public static void supprimerLivre(int id) {
-		Livre.supprimerLivreDeListe(id);
+		LivreCollec.supprimerLivreDeListe(id);
 		for(Map.Entry<Integer, Operation> entry : emprunts.entrySet()) {
 		    Operation value = entry.getValue();
 		    int key = entry.getKey();

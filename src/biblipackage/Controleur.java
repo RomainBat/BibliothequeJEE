@@ -10,34 +10,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
  * Servlet controlleur du site de gestion de la bibliothèque
  * @author athouary
  */
 @WebServlet("/Site")
 public class Controleur extends HttpServlet {
-	private static final int NON_CONNECTE = -1;
-	private static final int CONNEXION_REFUSEE = 0;
-	private static final int CONNEXION_ADMIN = 1;
-	private static final int CONNEXION_UTILISATEUR = 2;
+	public static final int NON_CONNECTE = -1;
+	public static final int CONNEXION_REFUSEE = 0;
+	public static final int CONNEXION_ADMIN = 1;
+	public static final int CONNEXION_UTILISATEUR = 2;
 	
 	private static final long serialVersionUID = 1L;
 	private String page = "/";
-	private HttpSession session;
-	int etatConnexion = NON_CONNECTE;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public Controleur() {
         super();
-		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Administrateur Bibliothécaire", true));
-		Utilisateur.addUtilisateurToListeUtilisateurs(new Utilisateur("Bob92","user","Utilisateur Commun", false));
-		Livre.creerNouveauLivre("Les chaussettes chaudes","Maurice",2);
-		Livre.creerNouveauLivre("La baignoire","Baudelaire",4);
-		Operation.nouvelleReservation(Utilisateur.getUtilisateurParIdentifiant("Bob92"), Livre.getLivreParId(0));
-		Operation.nouvelEmprunt(Utilisateur.getUtilisateurParIdentifiant("Bob92"), Livre.getLivreParId(1));
+        UtilisateurCollec.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Raymond Bibliothécaire", true));
+        UtilisateurCollec.addUtilisateurToListeUtilisateurs(new Utilisateur("Bob92","user","Robert Adhérent", false));
+		LivreCollec.creerNouveauLivre("Les chaussettes chaudes","Maurice",2);
+		LivreCollec.creerNouveauLivre("La baignoire","Baudelaire",4);
+		Operation.nouvelleReservation(UtilisateurCollec.getUtilisateurParIdentifiant("Bob92"), LivreCollec.getLivreParId(0));
+		Operation.nouvelEmprunt(UtilisateurCollec.getUtilisateurParIdentifiant("Bob92"), LivreCollec.getLivreParId(1));
     }
 
 	/**
@@ -45,7 +42,10 @@ public class Controleur extends HttpServlet {
 	 * Liens des différents templates
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		session = request.getSession(false);
+	    HttpSession session = request.getSession();
+	    if (session.isNew()) {
+			session.setAttribute("etatConnexion", NON_CONNECTE);
+	    }
 
 		if (request.getParameter("page") != null) {
 			switch(request.getParameter("page")) {
@@ -53,7 +53,7 @@ public class Controleur extends HttpServlet {
 				page = "/Recherche.jsp";
 				break;
 			case "Connexion" :
-				switch(etatConnexion) {
+				switch((Integer)session.getAttribute("etatConnexion")) {
 				case CONNEXION_REFUSEE :
 					// TODO: Set un attribute pour affichage erreur
 				case NON_CONNECTE :
@@ -73,7 +73,7 @@ public class Controleur extends HttpServlet {
 				page = "/Profil.jsp";
 				break;
 			case "Adherents" :
-				request.setAttribute("adherents", Utilisateur.getUtilisateurs());
+				request.setAttribute("adherents", UtilisateurCollec.getUtilisateurs());
 				page = "/Adherents.jsp";
 				break;
 			case "Gestion" :
@@ -81,8 +81,8 @@ public class Controleur extends HttpServlet {
 				break;
 			case "Deconnexion" :
 				page = "/Site?page=Connexion";
+				session.setAttribute("etatConnexion", NON_CONNECTE);
 				session.invalidate();
-				etatConnexion = NON_CONNECTE;
 				break;
 			default :
 				page = "/404.jsp";
@@ -101,37 +101,39 @@ public class Controleur extends HttpServlet {
 	 * Gestion des formulaires
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		session = request.getSession(false);
-		
+	    HttpSession session = request.getSession();
+	    if (session.isNew()) {
+			session.setAttribute("etatConnexion", NON_CONNECTE);
+	    }
 		switch(request.getParameter("formulaire")) {
 		case "connexion_connexion" :
-			etatConnexion = connexion(request.getParameter("id"), request.getParameter("mdp"), request);
+			tryConnexion(request.getParameter("id"), request.getParameter("mdp"), session);
 			break;
 		case "recherche_reserver" :
-			Operation.nouvelleReservation(Utilisateur.getUtilisateurParIdentifiant((String)session.getAttribute("id")), Livre.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
+			Operation.nouvelleReservation(UtilisateurCollec.getUtilisateurParIdentifiant((String)session.getAttribute("id")), LivreCollec.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
 		case "recherche_rechercher" :
 		case "gestion_rechercher" :
 		case "adherents_rechercher" :
-			request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
+			request.setAttribute("livresRecherches",LivreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 			break;
 		case "profil_annuler" :
 			Operation.annulerReservation(Integer.parseInt(request.getParameter("resa")));
 			break;
 		case "gestion_ajouter" :
-			Livre.creerNouveauLivre(request.getParameter("titre"),request.getParameter("auteur"),Integer.parseInt(request.getParameter("nombre")));				
+			LivreCollec.creerNouveauLivre(request.getParameter("titre"),request.getParameter("auteur"),Integer.parseInt(request.getParameter("nombre")));				
 			break;
 		case "gestion_valider" :
-			Livre.modifierNombreExemplaires(Integer.parseInt(request.getParameter("livre")), Integer.parseInt(request.getParameter("difference")));
-			request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
+			LivreCollec.modifierNombreExemplaires(Integer.parseInt(request.getParameter("livre")), Integer.parseInt(request.getParameter("difference")));
+			request.setAttribute("livresRecherches",LivreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 			break;
 		case "gestion_supprimer" :
 			Operation.supprimerLivre(Integer.parseInt(request.getParameter("livre")));
-			request.setAttribute("livresRecherches",Livre.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
+			request.setAttribute("livresRecherches",LivreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 			break;
 		case "adherents_emprunter_dereserver" :
 			Operation.annulerReservation(Integer.parseInt(request.getParameter("reservation")));
 		case "adherents_emprunter" :
-			Operation.nouvelEmprunt(Utilisateur.getUtilisateurParIdentifiant(request.getParameter("adherent")), Livre.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
+			Operation.nouvelEmprunt(UtilisateurCollec.getUtilisateurParIdentifiant(request.getParameter("adherent")), LivreCollec.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
 		case "adherents_selectionner" :
 			request.setAttribute("livresReserves", Operation.getLivresFromReservationsByUtilisateur(request.getParameter("adherent")));
 			request.setAttribute("livresEmpruntes", Operation.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
@@ -159,23 +161,20 @@ public class Controleur extends HttpServlet {
 	 * @return CONNEXION_ADMIN si l'utilisateur est connecté et administrateur, CONNEXION_UTILISATEUR sinon, CONNEXION_REFUSEE si les identifiants de correspondent pas à un utilisateur en base
 	 * @throws IOException
 	 */
-	private int connexion(String id, String mdp, HttpServletRequest request) throws IOException {
-		Utilisateur user = Utilisateur.utilisateurExiste(id,mdp);
-		if (user != null) {
-			session = request.getSession();
-			session.setAttribute("id", user.getIdentifiant());
-			session.setAttribute("isBibliothecaire",user.getIsBibliothecaire());
-			session.setAttribute("nom",user.getNom());
-			session.setMaxInactiveInterval(30*60);
-			
-			if (user.getIsBibliothecaire()) {
-				return CONNEXION_ADMIN;
+	public void tryConnexion(String id, String mdp, HttpSession session) throws IOException {
+		Utilisateur utilisateur = UtilisateurCollec.utilisateurExiste(id,mdp);
+		if (utilisateur != null) {
+			session.setAttribute("id", utilisateur.getIdentifiant());
+			session.setAttribute("isBibliothecaire",utilisateur.getIsBibliothecaire());
+			session.setAttribute("nom",utilisateur.getNom());
+			if (utilisateur.getIsBibliothecaire()) {
+				session.setAttribute("etatConnexion", CONNEXION_ADMIN);
 			}
 			else {
-				return CONNEXION_UTILISATEUR;
+				session.setAttribute("etatConnexion", CONNEXION_UTILISATEUR);
 			}
 		}
 		else
-			return CONNEXION_REFUSEE;
+			session.setAttribute("etatConnexion", CONNEXION_REFUSEE);
 	}
 }
