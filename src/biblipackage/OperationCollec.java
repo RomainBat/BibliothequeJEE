@@ -152,7 +152,7 @@ public class OperationCollec {
 		}
 	}
 	
-	private class Operation {
+	public class Operation {
 		private int id;
 		private int livreId;
 		private String emprunteurOuReserveurId;

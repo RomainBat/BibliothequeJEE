@@ -79,7 +79,7 @@ public class UtilisateurCollec {
 		return getUtilisateurParIdentifiant(id).getIsBibliothecaire();
 	}
 	
-	private class Utilisateur {
+	public class Utilisateur {
 		private String identifiant;
 		private String mdp;
 		private String nom;
