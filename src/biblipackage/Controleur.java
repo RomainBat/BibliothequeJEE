@@ -2,6 +2,7 @@ package biblipackage;
 
 import java.io.IOException;
 
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,17 +25,21 @@ public class Controleur extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String page = "/";
 	
+	@EJB
+	LivreCollec livreCollec;
+	@EJB
+	UtilisateurCollec utilisateurCollec;
+	@EJB
+	OperationCollec operationCollec;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public Controleur() {
         super();
-        UtilisateurCollec.addUtilisateurToListeUtilisateurs(new Utilisateur("Admin","root","Raymond Bibliothécaire", true));
-        UtilisateurCollec.addUtilisateurToListeUtilisateurs(new Utilisateur("Bob92","user","Robert Adhérent", false));
-		LivreCollec.creerNouveauLivre("Les chaussettes chaudes","Maurice",2);
-		LivreCollec.creerNouveauLivre("La baignoire","Baudelaire",4);
-		Operation.nouvelleReservation(UtilisateurCollec.getUtilisateurParIdentifiant("Bob92"), LivreCollec.getLivreParId(0));
-		Operation.nouvelEmprunt(UtilisateurCollec.getUtilisateurParIdentifiant("Bob92"), LivreCollec.getLivreParId(1));
+        operationCollec.init();
+        utilisateurCollec.init();
+        livreCollec.init();
     }
 
 	/**
@@ -68,12 +73,12 @@ public class Controleur extends HttpServlet {
 				}
 				break;
 			case "Profil" :
-				request.setAttribute("emprunts", Operation.getLivresFromEmpruntsByUtilisateur((String)session.getAttribute("id")));
-				request.setAttribute("reservations", Operation.getLivresFromReservationsByUtilisateur((String)session.getAttribute("id")));
+				request.setAttribute("emprunts", operationCollec.getLivresFromEmpruntsByUtilisateur((String)session.getAttribute("id")));
+				request.setAttribute("reservations", operationCollec.getLivresFromReservationsByUtilisateur((String)session.getAttribute("id")));
 				page = "/Profil.jsp";
 				break;
 			case "Adherents" :
-				request.setAttribute("adherents", UtilisateurCollec.getUtilisateurs());
+				request.setAttribute("adherents", utilisateurCollec.getUtilisateurs());
 				page = "/Adherents.jsp";
 				break;
 			case "Gestion" :
@@ -110,39 +115,39 @@ public class Controleur extends HttpServlet {
 			tryConnexion(request.getParameter("id"), request.getParameter("mdp"), session);
 			break;
 		case "recherche_reserver" :
-			Operation.nouvelleReservation(UtilisateurCollec.getUtilisateurParIdentifiant((String)session.getAttribute("id")), LivreCollec.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
+			operationCollec.nouvelleReservation((String)session.getAttribute("id"), Integer.parseInt(request.getParameter("livre")));
 		case "recherche_rechercher" :
 		case "gestion_rechercher" :
 		case "adherents_rechercher" :
-			request.setAttribute("livresRecherches",LivreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
+			request.setAttribute("livresRecherches",livreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 			break;
 		case "profil_annuler" :
-			Operation.annulerReservation(Integer.parseInt(request.getParameter("resa")));
+			operationCollec.annulerReservation(Integer.parseInt(request.getParameter("resa")));
 			break;
 		case "gestion_ajouter" :
-			LivreCollec.creerNouveauLivre(request.getParameter("titre"),request.getParameter("auteur"),Integer.parseInt(request.getParameter("nombre")));				
+			livreCollec.creerNouveauLivre(request.getParameter("titre"),request.getParameter("auteur"),Integer.parseInt(request.getParameter("nombre")));				
 			break;
 		case "gestion_valider" :
-			LivreCollec.modifierNombreExemplaires(Integer.parseInt(request.getParameter("livre")), Integer.parseInt(request.getParameter("difference")));
-			request.setAttribute("livresRecherches",LivreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
+			livreCollec.modifierNombreExemplaires(Integer.parseInt(request.getParameter("livre")), Integer.parseInt(request.getParameter("difference")));
+			request.setAttribute("livresRecherches",livreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 			break;
 		case "gestion_supprimer" :
-			Operation.supprimerLivre(Integer.parseInt(request.getParameter("livre")));
-			request.setAttribute("livresRecherches",LivreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
+			operationCollec.supprimerLivre(Integer.parseInt(request.getParameter("livre")));
+			request.setAttribute("livresRecherches",livreCollec.rechercherLivres(request.getParameter("titre"), request.getParameter("auteur")));
 			break;
 		case "adherents_emprunter_dereserver" :
-			Operation.annulerReservation(Integer.parseInt(request.getParameter("reservation")));
+			operationCollec.annulerReservation(Integer.parseInt(request.getParameter("reservation")));
 		case "adherents_emprunter" :
-			Operation.nouvelEmprunt(UtilisateurCollec.getUtilisateurParIdentifiant(request.getParameter("adherent")), LivreCollec.getLivreParId(Integer.parseInt(request.getParameter("livre"))));
+			operationCollec.nouvelEmprunt(request.getParameter("adherent"), Integer.parseInt(request.getParameter("livre")));
 		case "adherents_selectionner" :
-			request.setAttribute("livresReserves", Operation.getLivresFromReservationsByUtilisateur(request.getParameter("adherent")));
-			request.setAttribute("livresEmpruntes", Operation.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
+			request.setAttribute("livresReserves", operationCollec.getLivresFromReservationsByUtilisateur(request.getParameter("adherent")));
+			request.setAttribute("livresEmpruntes", operationCollec.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
 			request.setAttribute("selectedAdherent", request.getParameter("adherent"));
 			break;
 		case "adherents_restituer" :
-			Operation.annulerEmprunt(Integer.parseInt(request.getParameter("emprunt")));
-			request.setAttribute("livresReserves", Operation.getLivresFromReservationsByUtilisateur(request.getParameter("adherent")));
-			request.setAttribute("livresEmpruntes", Operation.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
+			operationCollec.annulerEmprunt(Integer.parseInt(request.getParameter("emprunt")));
+			request.setAttribute("livresReserves", operationCollec.getLivresFromReservationsByUtilisateur(request.getParameter("adherent")));
+			request.setAttribute("livresEmpruntes", operationCollec.getLivresFromEmpruntsByUtilisateur(request.getParameter("adherent")));
 			request.setAttribute("selectedAdherent", request.getParameter("adherent"));
 			break;
 		default :
@@ -162,12 +167,11 @@ public class Controleur extends HttpServlet {
 	 * @throws IOException
 	 */
 	public void tryConnexion(String id, String mdp, HttpSession session) throws IOException {
-		Utilisateur utilisateur = UtilisateurCollec.utilisateurExiste(id,mdp);
-		if (utilisateur != null) {
-			session.setAttribute("id", utilisateur.getIdentifiant());
-			session.setAttribute("isBibliothecaire",utilisateur.getIsBibliothecaire());
-			session.setAttribute("nom",utilisateur.getNom());
-			if (utilisateur.getIsBibliothecaire()) {
+		if (utilisateurCollec.utilisateurExiste(id,mdp)) {
+			session.setAttribute("id", id);
+			session.setAttribute("isBibliothecaire",utilisateurCollec.getIsBibliothecaire(id));
+			session.setAttribute("nom",utilisateurCollec.getNom(id));
+			if ((boolean)session.getAttribute("isBibliothecaire")) {
 				session.setAttribute("etatConnexion", CONNEXION_ADMIN);
 			}
 			else {
