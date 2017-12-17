@@ -37,9 +37,6 @@ public class Controleur extends HttpServlet {
      */
     public Controleur() {
         super();
-        operationCollec.init();
-        utilisateurCollec.init();
-        livreCollec.init();
     }
 
 	/**

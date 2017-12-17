@@ -1,6 +1,7 @@
 package biblipackage;
 
 import javax.ejb.Singleton;
+import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -17,7 +18,8 @@ public class LivreCollec {
 	private static int nextId = 0;
 	private static HashMap<Integer,Livre> listeLivres = new HashMap<Integer,Livre>();
 	
-	public void init() {
+	@PostConstruct
+	void init() {
 		creerNouveauLivre("Les chaussettes chaudes","Maurice",2);
         creerNouveauLivre("La baignoire","Baudelaire",4);
 	}

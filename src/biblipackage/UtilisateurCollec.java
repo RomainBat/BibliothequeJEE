@@ -3,6 +3,7 @@ package biblipackage;
 import java.util.Collection;
 import java.util.HashMap;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -13,7 +14,8 @@ import javax.ejb.Singleton;
 public class UtilisateurCollec {
 	private HashMap<String,Utilisateur> listeUtilisateurs = new HashMap<String,Utilisateur>();
 	
-	public void init() {
+	@PostConstruct
+	void init() {
 		addUtilisateurToListeUtilisateurs("Admin","root","Raymond Bibliothécaire", true);
 	    addUtilisateurToListeUtilisateurs("Bob92","user","Robert Adhérent", false);
 	}

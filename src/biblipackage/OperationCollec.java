@@ -5,16 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 
 /**
  * Implémentation d'un emprunt ou d'une réservation, avec le livre l'utilisateur concerné 
  * @author rbaticle
  */
+@Startup
 @Local
 @Singleton
 public class OperationCollec {
@@ -28,7 +31,8 @@ public class OperationCollec {
 	private HashMap<Integer,Operation> reservations = new HashMap<Integer,Operation>();
 	private HashMap<Integer,Operation> emprunts = new HashMap<Integer,Operation>();
 	
-	public void init() {
+	@PostConstruct
+	void init() {
 		nouvelleReservation("Bob92", 0);
         nouvelEmprunt("Bob92", 1);
 	}
