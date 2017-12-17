@@ -1,6 +1,22 @@
 # Bibliothèque JEE
 
-Application web de gestion d'une bibliothèque. Pour une raison de gestion de session, cette version n'est utilisable que par un client à la fois.
+## Description
+
+### À propos
+
+Application web de gestion d'une bibliothèque. À l'opposé de la première, dans cette seconde version, plusieurs clients peuvent consulter et se connecter en même temps au site web.
+
+### Limites
+
+Le site n'est pas tout à fait fonctionnel : malgré plusieurs heures de recherche, l'injection des EJBs avec la clause `@EJB` ne fonctionne pas pour une raison inconnue (il semblerait que les EJB ne fassent pas partie du contexte de la "servlet".). Ayant attaqué la suite du projet assez tard, nous n'avons pas eu le temps de contacter M. Busca pour obtenir une assistance.
+
+En revanche, dans la partie "fonctionnement" de ce document, sont listés les points importants que nous avons pu développer.
+
+### Fonctionnement
+
+* Le modèle a été modifié en "singleton pattern" : les trois classes du modèle sont des EJB "singleton" et ne sont donc instanciées qu'une unique fois au lancement du serveur (clause `@Startup`).
+* Les classes du modèle gèrent respectivement une collection d'utilisateurs, de livres et d'opérations (emprunts ou réservations).
+* Des données exemples sont introduites dans les collections après l'instanciation des classes avec la clause `@PostConstruc`, afin de rendre les tests de la plateforme possibles.
 
 ## Installation
 
@@ -18,7 +34,7 @@ L'application s'utilise en mode déconnecté avec la recherche de livre. Il faut
 
 Pour se connecter, utiliser les combinaisons identifiant | mot de passe suivants :
 * **Biblitohécaire** : Admin | root
-* **Adhérent** : John | user
+* **Adhérent** : Bob92 | user
 
 ## Auteurs
 

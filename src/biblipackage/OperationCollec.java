@@ -13,6 +13,8 @@ import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
+import biblipackage.LivreCollec.Livre;
+
 /**
  * Implémentation d'un emprunt ou d'une réservation, avec le livre l'utilisateur concerné 
  * @author rbaticle
@@ -52,7 +54,7 @@ public class OperationCollec {
 	 * @return true si la réservation a été effectuée, false sinon
 	 */
 	public boolean nouvelleReservation(String reservant, int livre) {
-		Operation myOperation = new Operation(livre, reservant, calculateNextId());
+		Operation myOperation = new Operation(livre, reservant, calculateNextId(), livreCollec.getLivreParId(livre));
 		if(livreCollec.getListeLivres().get(livre).emprunterOuReserver()) {
 			reservations.put(myOperation.id, myOperation);
 			return true;
@@ -67,7 +69,7 @@ public class OperationCollec {
 	 * @return true si la réservation a été effectuée, false sinon
 	 */
 	public boolean nouvelEmprunt(String emprunteur, int livre) {
-		Operation myOperation = new Operation(livre, emprunteur, calculateNextId());
+		Operation myOperation = new Operation(livre, emprunteur, calculateNextId(), livreCollec.getLivreParId(livre));
 		if(livreCollec.getListeLivres().get(livre).emprunterOuReserver()) {
 			emprunts.put(myOperation.getId(), myOperation);
 			return true;
@@ -156,7 +158,20 @@ public class OperationCollec {
 		private int id;
 		private int livreId;
 		private String emprunteurOuReserveurId;
-
+		private Livre livre;
+		
+		/**
+		 * Constructeur
+		 * @param livre le livre réservé ou emprunté
+		 * @param emprunteurOuReserveur l'utilisateur ayant effectué l'opération
+		 */
+		public Operation(int livreId, String emprunteurOuReserveurId, int id, Livre livre) {
+			//TODO gerer user id
+			this.id = id;
+			this.livreId = livreId;
+			this.emprunteurOuReserveurId = emprunteurOuReserveurId;
+			this.livre = livre;
+		}
 		/**
 		 * Getter de l'identifiant de l'opération
 		 * @return l'identifiant de l'opération
@@ -166,31 +181,27 @@ public class OperationCollec {
 		}
 		
 		/**
-		 * Getter du livre de l'opération
-		 * @return le livre de l'opération
+		 * Getter de l'id du livre de l'opération
+		 * @return l'id du livre de l'opération
 		 */
 		public int getLivreId() {
 			return this.livreId;
 		}
 		
 		/**
-		 * Getter de l'utilisateur lié à l'opération
-		 * @return l'utilisateur lié à l'opération
+		 * Getter du livre de l'opération
+		 * @return le livre de l'opération
 		 */
-		public String getEmprunteurOuReserveurId() {
-			return this.emprunteurOuReserveurId;
+		public Livre getLivre() {
+			return this.livre;
 		}
 		
 		/**
-		 * Constructeur
-		 * @param livre le livre réservé ou emprunté
-		 * @param emprunteurOuReserveur l'utilisateur ayant effectué l'opération
+		 * Getter de l'id de l'utilisateur lié à l'opération
+		 * @return l'id de l'utilisateur lié à l'opération
 		 */
-		public Operation(int livreId, String emprunteurOuReserveurId, int id) {
-			//TODO gerer user id
-			this.id = id;
-			this.livreId = livreId;
-			this.emprunteurOuReserveurId = emprunteurOuReserveurId;
+		public String getEmprunteurOuReserveurId() {
+			return this.emprunteurOuReserveurId;
 		}
 	}
 	
